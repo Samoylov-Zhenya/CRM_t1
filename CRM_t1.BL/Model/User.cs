@@ -9,12 +9,30 @@ namespace CRM_t1.BL.Model
     public class User
     {
         #region --- Поля  ---
+        /// <summary>
+        /// Артикул товара в системе или id.
+        /// </summary>
         public int ID { get; }
+        /// <summary>
+        /// Имя пользователя.
+        /// </summary>
         public string name { get; }
-        public string password { get; }
+        /// <summary>
+        /// Пароль пользователя.
+        /// </summary>
+        public string password { get; }//TODO: хранить хеш
+        /// <summary>
+        /// Номер телефона.
+        /// </summary>
         public int phoneNumber { get; }
         #endregion
         #region --- Конструктор ---
+        /// <summary>
+        /// Создание нового пользователя.
+        /// </summary>
+        /// <param name="Name">Имя пользователя.</param>
+        /// <param name="Password">Пароль пользователя.</param>
+        /// <param name="PhoneNumber">Номер телефона.</param>
         public User(string Name, string Password, int PhoneNumber)
         {
             // TODO: проверка
