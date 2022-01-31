@@ -7,6 +7,8 @@ namespace CRM_t1.CMD
         static void Main(string[] args)
         {
             Console.WriteLine("Приложение запущено");
+            
+            Console.ReadLine();
         }
     }
 }
