@@ -1,4 +1,5 @@
 ﻿using System;
+using CRM_t1.BL.Controller;
 
 namespace CRM_t1.CMD
 {
@@ -33,7 +34,36 @@ namespace CRM_t1.CMD
         }
         static void NewUsee()
         {
+            Console.Write("Имя пользователя: ");
+            var name = Console.ReadLine();
+            if (name.Length < 3)
+            {
+                Console.WriteLine("Ошибка короткое имя");
+                return;
+            }
 
+            Console.Write("Пароль: ");
+            var password = Console.ReadLine();
+            if (name.Length < 2)
+            {
+                Console.WriteLine("Ошибка короткий пароль");
+                return;
+            }
+
+
+            Console.Write("Номер телофона: ");
+            int phoneNumber;
+            int.TryParse(Console.ReadLine(), out phoneNumber);
+
+            var userController = new UserController(name, password, phoneNumber);
+            if (userController.Save())
+            {
+                Console.WriteLine("Успешно сохранён пользователь");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка");
+            }
         }
         static void Hellp()
         {
@@ -42,5 +72,17 @@ namespace CRM_t1.CMD
                             $"-h помощь\n" +
                             $"-e выход\n");
         }
+        static void NewUseeTest()
+        {
+
+            var name = "TestTest";
+            var password = "TestTest";
+            int phoneNumber = 957344556;
+
+            var userController = new UserController(name, password, phoneNumber);
+            Console.WriteLine();
+            userController.Save();
+        }
+
     }
 }

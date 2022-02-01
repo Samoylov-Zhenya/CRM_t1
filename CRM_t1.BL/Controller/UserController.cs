@@ -18,7 +18,7 @@ namespace CRM_t1.BL.Controller
         /// <summary>
         /// Пользователь приложения.
         /// </summary>
-        public User User { get; }
+        public User _user { get; }
         #endregion
         #region --- Конструктор ---
         /// <summary>
@@ -26,9 +26,10 @@ namespace CRM_t1.BL.Controller
         /// </summary>
         /// <param name="User"> Пользователь. </param>
         /// <exception cref="ArgumentNullException">Пользователь не может быть Null</exception>
-        public UserController(User User)
+        public UserController(string userName, string userPassword, int userPhoneNumber)
         {
-            this.User = User ?? throw new ArgumentNullException("Пользователь не может быть Null", nameof(User));
+            // TODO: проверка
+            _user = new User(userName, userPassword, userPhoneNumber);
         }
         // TODO:переписать
         /// <summary>
@@ -44,7 +45,7 @@ namespace CRM_t1.BL.Controller
             {
                 if (formatter.Deserialize(fs) is User user)
                 {
-                    User = user;
+                    _user = user;
                 }
                 // TODO: если пользователя не прочитали
             }
@@ -55,7 +56,7 @@ namespace CRM_t1.BL.Controller
         /// Сохранить данные пользователя (сериализация .dat).
         /// </summary>
         /// <returns></returns>
-        public bool IsSave()
+        public bool Save()
         {
             // TODO: перейти на XML или JSON
             // пока что только 1 пользователь доступен для cериализации.
@@ -63,7 +64,7 @@ namespace CRM_t1.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, User);
+                formatter.Serialize(fs, _user);
             }
             return true;
         }
