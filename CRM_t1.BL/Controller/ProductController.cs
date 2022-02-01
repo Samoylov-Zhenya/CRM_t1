@@ -22,6 +22,7 @@ namespace CRM_t1.BL.Controller
         {
             _products = GetProductData();
         }
+        
         public ProductController(int productsId) : this()
         {
             //TODO: проверка
@@ -58,7 +59,7 @@ namespace CRM_t1.BL.Controller
 
             using (var fs = new FileStream("product.dat", FileMode.OpenOrCreate))
             {
-                if (formatter.Deserialize(fs) is List<Product> product)
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<Product> product)
                 {
                     return product;
                 }
