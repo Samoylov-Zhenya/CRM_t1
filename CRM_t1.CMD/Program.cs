@@ -41,6 +41,14 @@ namespace CRM_t1.CMD
         }
         static void AllUsee()
         {
+            Console.WriteLine("Пароль");
+            if (Console.ReadLine() != "qaz")
+            {
+                Console.ForegroundColor = ConsoleColor.Green; // устанавливаем цвет
+                Console.WriteLine("Неправильный пароль");
+                Console.ResetColor(); // сбрасываем в стандартный
+                return;
+            }
             var userController = new UserController();
             for (int i = 0; userController._users.Count > i; i++)
             {
