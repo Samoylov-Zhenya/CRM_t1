@@ -22,6 +22,13 @@ namespace CRM_t1.CMD
                     case "-a":
                         AllUsee();
                         break;
+                    case "-c":
+                        Сlean();
+                        break;
+                    case "-nAdmin":
+                        NewUseeTest();
+                        break;
+                        //////
                     case "-n":
                         NewUsee();
                         break;
@@ -39,22 +46,55 @@ namespace CRM_t1.CMD
                 }
             }
         }
-        static void AllUsee()
+        #region --- для админа ---
+        static void Сlean()
         {
             Console.WriteLine("Пароль");
-            if (Console.ReadLine() != "qaz")
+            var userController = new UserController();
+            if (userController.Clear(Console.ReadLine()))
             {
-                Console.ForegroundColor = ConsoleColor.Green; // устанавливаем цвет
+                Console.WriteLine("Очистка завершина");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
                 Console.WriteLine("Неправильный пароль");
                 Console.ResetColor(); // сбрасываем в стандартный
                 return;
             }
+        }
+        static void NewUseeTest()
+        {
+
+            var name = "TestTest";
+            var password = "TestTest";
+            int phoneNumber = 957344556;
+
+            var userController = new UserController(name, password, phoneNumber);
+            Console.WriteLine();
+            userController.Save();
+        }
+        static void AllUsee()
+        {
+
+            Console.WriteLine("Пароль");
             var userController = new UserController();
-            for (int i = 0; userController._users.Count > i; i++)
+            if (userController.AllPrint(Console.ReadLine()))
             {
-                Console.WriteLine(userController._users[i]);
+                for (int i = 0; userController._users.Count > i; i++)
+                {
+                    Console.WriteLine(userController._users[i]);
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
+                Console.WriteLine("Неправильный пароль");
+                Console.ResetColor(); // сбрасываем в стандартный
+                return;
             }
         }
+        #endregion
         static void NewUsee()
         {
             Console.Write("Имя пользователя: ");
@@ -105,17 +145,7 @@ namespace CRM_t1.CMD
                             $"-h помощь\n" +
                             $"-e выход\n");
         }
-        static void NewUseeTest()
-        {
-
-            var name = "TestTest";
-            var password = "TestTest";
-            int phoneNumber = 957344556;
-
-            var userController = new UserController(name, password, phoneNumber);
-            Console.WriteLine();
-            userController.Save();
-        }
+        
 
     }
 }

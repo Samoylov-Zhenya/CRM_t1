@@ -62,6 +62,25 @@ namespace CRM_t1.BL.Controller
         }
         #endregion
         #region --- Методы ---
+        public bool AllPrint(string str)
+        {
+            if (str != "qaz")
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool Clear(string str)
+        {
+            if (str != "qazqaz")
+            {
+                return false;
+            }
+            var userController = new UserController();
+            userController._users.Clear();
+            userController.Save();
+            return true;
+        }
         // TODO:переписать
         /// <summary>
         /// Получить cписок пользователей (сериализация .dat).
