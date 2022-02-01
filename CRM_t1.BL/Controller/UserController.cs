@@ -15,43 +15,76 @@ namespace CRM_t1.BL.Controller
     public class UserController
     {
         #region --- Поля ---
+        // небезопасно List<>
         /// <summary>
         /// Пользователь приложения.
         /// </summary>
-        public User _user { get; }
+        public List<User> _users { get; }
+        public User currentUser { get; }
         #endregion
         #region --- Конструктор ---
+        public UserController()
+        {
+            _users = GetUsersData();
+        }
+        public UserController(int userId, string userPassword)
+        {
+            //TODO: проверка
+            _users = GetUsersData();
+
+            currentUser = _users.SingleOrDefault(u => u.ID == userId && u.password == userPassword);
+        
+            if (currentUser == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
+                Console.WriteLine("Пользователь не найден :(");
+                Console.ResetColor(); // сбрасываем в стандартный
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Green; // устанавливаем цвет
+                Console.WriteLine("Пользователь найден :)");
+                Console.ResetColor(); // сбрасываем в стандартный
+                Console.WriteLine(currentUser);
+            }
+        }
         /// <summary>
         /// Создание нового пользователя.
         /// </summary>
-        /// <param name="User"> Пользователь. </param>
-        /// <exception cref="ArgumentNullException">Пользователь не может быть Null</exception>
-        public UserController(string userName, string userPassword, int userPhoneNumber)
+        /// <param name="userName"></param>
+        /// <param name="userPassword"></param>
+        /// <param name="userPhoneNumber"></param>
+        public UserController(string userName, string userPassword, int userPhoneNumber) : this()
         {
             // TODO: проверка
-            _user = new User(userName, userPassword, userPhoneNumber);
+            var currentUser = new User(userName, userPassword, userPhoneNumber);
+            _users.Add(currentUser);
         }
+        #endregion
+        #region --- Методы ---
         // TODO:переписать
         /// <summary>
-        /// Получить данные пользователя (сериализация .dat).
+        /// Получить cписок пользователей (сериализация .dat).
         /// </summary>
-        /// <returns> Пользователь или NULL. </returns>
-        public UserController()
+        /// <returns> Список пользователей. </returns>
+        private List<User> GetUsersData()
         {
             // TODO: перейти на XML или JSON
-            // пока что только 1 пользователь доступен для десериализации.
             var formatter = new BinaryFormatter();
+
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if (formatter.Deserialize(fs) is User user)
+                if (formatter.Deserialize(fs) is List<User> users)
                 {
-                    _user = user;
+                    return users;
+                }
+                else
+                {
+                    return new List<User>();
                 }
                 // TODO: если пользователя не прочитали
             }
         }
-        #endregion
-        #region --- Методы ---
         /// <summary>
         /// Сохранить данные пользователя (сериализация .dat).
         /// </summary>
@@ -59,16 +92,15 @@ namespace CRM_t1.BL.Controller
         public bool Save()
         {
             // TODO: перейти на XML или JSON
-            // пока что только 1 пользователь доступен для cериализации.
             var formatter = new BinaryFormatter();
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, _user);
+                formatter.Serialize(fs, _users);
             }
             return true;
         }
-        
+
         #endregion
     }
 }
