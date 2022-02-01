@@ -1,4 +1,5 @@
 ﻿using CRM_t1.BL.Controller;
+using CRM_t1.BL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace CRM_t1.CMD
 {
     internal class Menu
     {
+        private User user;
+
         public Menu()
         {
             MenuF();
@@ -22,6 +25,9 @@ namespace CRM_t1.CMD
                 var str = Console.ReadLine();
                 switch (str)
                 {
+                    case "-s":
+                        Sale();
+                        break;
                     case "-a":
                         AllUsee();
                         break;
@@ -58,6 +64,26 @@ namespace CRM_t1.CMD
             }
         }
 
+        private void Sale()
+        {
+            if (user == null)
+            {
+                Console.WriteLine("Войдите в систему");
+                return;
+            }
+            Console.Write("Id товара: ");
+            int.TryParse(Console.ReadLine(), out int id);
+
+            Console.Write("Цена: ");
+            int.TryParse(Console.ReadLine(), out int price);
+
+            Console.Write("Количество: ");
+            int.TryParse(Console.ReadLine(), out int quantity);
+
+            var history = new WarehouseHistoryController(user.ID, id, price, quantity);
+
+            Console.WriteLine("Продано");
+        }
         private void SearchProduct()
         {
             Console.Write("Id: ");
@@ -65,55 +91,6 @@ namespace CRM_t1.CMD
 
             var productController = new ProductController(id);
         }
-        #region --- для админа ---
-        private void Сlean()
-        {
-            Console.WriteLine("Пароль");
-            var userController = new UserController();
-            if (userController.Clear(Console.ReadLine()))
-            {
-                Console.WriteLine("Очистка завершина");
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
-                Console.WriteLine("Неправильный пароль");
-                Console.ResetColor(); // сбрасываем в стандартный
-                return;
-            }
-        }
-        private void NewUseeTest()
-        {
-
-            var name = "TestTest";
-            var password = "TestTest";
-            int phoneNumber = 957344556;
-
-            var userController = new UserController(name, password, phoneNumber);
-            Console.WriteLine();
-            userController.Save();
-        }
-        private void AllUsee()
-        {
-
-            Console.WriteLine("Пароль");
-            var userController = new UserController();
-            if (userController.AllPrint(Console.ReadLine()))
-            {
-                for (int i = 0; userController._users.Count > i; i++)
-                {
-                    Console.WriteLine(userController._users[i]);
-                }
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
-                Console.WriteLine("Неправильный пароль");
-                Console.ResetColor(); // сбрасываем в стандартный
-                return;
-            }
-        }
-        #endregion
         private void NewProduct()
         {
             Console.Write("Id: ");
@@ -131,9 +108,9 @@ namespace CRM_t1.CMD
             int.TryParse(Console.ReadLine(), out int price);
 
 
-            
+
             var productController = new ProductController(id, name, cost, price);
-            
+
             if (productController.Save())
             {
                 Console.WriteLine("Успешно сохранён товар");
@@ -183,7 +160,8 @@ namespace CRM_t1.CMD
             Console.Write("Пароль: ");
             var password = Console.ReadLine();
 
-            var userController = new UserController(id, password);
+            var Cuser = new UserController(id, password);
+            user = Cuser.currentUser;
         }
         private void Hellp()
         {
@@ -191,8 +169,62 @@ namespace CRM_t1.CMD
                             $"-li войти в систему\n" +
                             $"-nu новый пользователь\n" +
                             $"-np новый продукт\n" +
-                            $"-h помощь\n" +
-                            $"-e выход\n");
+                            $"-sp поиск товара\n" +
+                            $"-s  продажа\n" +
+                            $"-h  помощь\n" +
+                            $"-e  выход\n"
+                           );
         }
+
+
+        #region --- для админа ---
+        private void Сlean()
+        {
+            Console.WriteLine("Пароль");
+            var userController = new UserController();
+            if (userController.Clear(Console.ReadLine()))
+            {
+                Console.WriteLine("Очистка завершина");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
+                Console.WriteLine("Неправильный пароль");
+                Console.ResetColor(); // сбрасываем в стандартный
+                return;
+            }
+        }
+        private void NewUseeTest()
+        {
+
+            var name = "TestTest";
+            var password = "TestTest";
+            int phoneNumber = 957344556;
+
+            var userController = new UserController(name, password, phoneNumber);
+            Console.WriteLine();
+            userController.Save();
+        }
+        private void AllUsee()
+        {
+
+            Console.WriteLine("Пароль");
+            var userController = new UserController();
+            if (userController.AllPrint(Console.ReadLine()))
+            {
+                for (int i = 0; userController._users.Count > i; i++)
+                {
+                    Console.WriteLine(userController._users[i]);
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
+                Console.WriteLine("Неправильный пароль");
+                Console.ResetColor(); // сбрасываем в стандартный
+                return;
+            }
+        }
+        #endregion
     }
 }
