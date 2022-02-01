@@ -1,5 +1,4 @@
 ﻿using System;
-using CRM_t1.BL.Controller;
 
 namespace CRM_t1.CMD
 {
@@ -9,7 +8,6 @@ namespace CRM_t1.CMD
         {
             Console.WriteLine("Приложение запущено");
             var menu = new Menu();
-            //menu.MenuF();
         }
     }
 }
