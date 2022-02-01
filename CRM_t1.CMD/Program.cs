@@ -14,12 +14,19 @@ namespace CRM_t1.CMD
         {
             for (; ; )
             {
+                Console.WriteLine();
                 Console.WriteLine("Выберите действие (-h помощь)");
                 var str = Console.ReadLine();
                 switch (str)
                 {
+                    case "-a":
+                        AllUsee();
+                        break;
                     case "-n":
                         NewUsee();
+                        break;
+                    case "-li":
+                        LogIn();
                         break;
                     case "-h":
                         Hellp();
@@ -30,6 +37,14 @@ namespace CRM_t1.CMD
                     default:
                         break;
                 }
+            }
+        }
+        static void AllUsee()
+        {
+            var userController = new UserController();
+            for (int i = 0; userController._users.Count > i; i++)
+            {
+                Console.WriteLine(userController._users[i]);
             }
         }
         static void NewUsee()
@@ -44,7 +59,7 @@ namespace CRM_t1.CMD
 
             Console.Write("Пароль: ");
             var password = Console.ReadLine();
-            if (name.Length < 2)
+            if (password.Length < 2)
             {
                 Console.WriteLine("Ошибка короткий пароль");
                 return;
@@ -65,9 +80,19 @@ namespace CRM_t1.CMD
                 Console.WriteLine("Ошибка");
             }
         }
+        static void LogIn()
+        {
+            Console.Write("ID (последние 4 цифры телефона): ");
+            int id = Convert.ToInt32(Console.ReadLine()); //TODO: проверка
+            Console.Write("Пароль: ");
+            var password = Console.ReadLine();
+
+            var userController = new UserController(id, password);
+        }
         static void Hellp()
         {
             Console.WriteLine(
+                            $"-li войти в систему\n" +
                             $"-n новый пользователь\n" +
                             $"-h помощь\n" +
                             $"-e выход\n");
