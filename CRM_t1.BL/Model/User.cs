@@ -52,6 +52,16 @@ namespace CRM_t1.BL.Model
 
             return strID;
         }
+        public override string ToString()
+        {
+            
+            return 
+                $"\nID\t{ID} " +
+                $"\nname\t{name} " +
+                $"\npass\t{password} " +
+                $"\nphone\t{phoneNumber} " +
+                $"\nType\t{base.ToString()}";
+        }
         #endregion
     }
 }
