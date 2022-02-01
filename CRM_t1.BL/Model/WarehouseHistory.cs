@@ -6,28 +6,32 @@ using System.Threading.Tasks;
 
 namespace CRM_t1.BL.Model
 {
-    internal class WarehouseHistory
+    [Serializable]
+    public class WarehouseHistory
     {
-        static int count = 0;
         int ID;
-        int IdUser;
-        int IdProduct;
-        int priceProduct;
-        int quantityProduct;
+        int userId;
+        //TODO: несколько продаж
+        int productId;
+        int productPrice;
+        int productQuantity;
 
-        public WarehouseHistory()
+        public WarehouseHistory(int UserId, int ProductsId, int ProductsPrice, int ProductsQuantity, int Count)
         {
-            ID = count;
-            count++;
+            ID = Count;
+            userId = UserId;
+            productId = ProductsId;
+            productPrice = ProductsPrice;
+            productQuantity = ProductsQuantity;
         }
         public override string ToString()
         {
             return
                $"\nId\t{ID} " +
-               $"\nUser\t{IdUser} " +
-               $"\nProd.\t{IdProduct} " +
-               $"\nQuan.\t{quantityProduct} " +
-               $"\nPrice\t{priceProduct}" +
+               $"\nUser\t{userId} " +
+               $"\nProd.\t{productId} " +
+               $"\nQuan.\t{productQuantity} " +
+               $"\nPrice\t{productPrice}" +
                $"\nType\t{base.ToString()}";
         }
     }
