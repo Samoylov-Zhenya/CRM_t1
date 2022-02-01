@@ -18,7 +18,7 @@ namespace CRM_t1.BL.Controller
         /// <summary>
         /// Пользователь приложения.
         /// </summary>
-        public User user { get; }
+        public User User { get; }
         #endregion
         #region --- Конструктор ---
         /// <summary>
@@ -28,7 +28,26 @@ namespace CRM_t1.BL.Controller
         /// <exception cref="ArgumentNullException">Пользователь не может быть Null</exception>
         public UserController(User User)
         {
-            user = User ?? throw new ArgumentNullException("Пользователь не может быть Null", nameof(User));
+            this.User = User ?? throw new ArgumentNullException("Пользователь не может быть Null", nameof(User));
+        }
+        // TODO:переписать
+        /// <summary>
+        /// Получить данные пользователя (сериализация .dat).
+        /// </summary>
+        /// <returns> Пользователь или NULL. </returns>
+        public UserController()
+        {
+            // TODO: перейти на XML или JSON
+            // пока что только 1 пользователь доступен для десериализации.
+            var formatter = new BinaryFormatter();
+            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
+            {
+                if (formatter.Deserialize(fs) is User user)
+                {
+                    User = user;
+                }
+                // TODO: если пользователя не прочитали
+            }
         }
         #endregion
         #region --- Методы ---
@@ -44,24 +63,11 @@ namespace CRM_t1.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, user);
+                formatter.Serialize(fs, User);
             }
             return true;
         }
-        /// <summary>
-        /// Получить данные пользователя (сериализация .dat).
-        /// </summary>
-        /// <returns> Пользователь или NULL. </returns>
-        public User Load()
-        {
-            // TODO: перейти на XML или JSON
-            // пока что только 1 пользователь доступен для десериализации.
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                return formatter.Deserialize(fs) as User;
-            }
-        }
+        
         #endregion
     }
 }
