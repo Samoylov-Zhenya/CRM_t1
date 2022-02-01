@@ -47,6 +47,16 @@ namespace CRM_t1.BL.Model
         }
         #endregion
         #region --- Методы ---
+        public override string ToString()
+        {
+            return
+                $"\nId\t{ID} " +
+                $"\nName\t{name} " +
+                $"\nCost\t{cost} " +
+                $"\nQuan.\t{quantity} " +
+                $"\nPrice\t{price}" +
+                $"\nType\t{base.ToString()}";
+        }
         /// <summary>
         /// Изменение количества товара на складе при продажи.
         /// </summary>
