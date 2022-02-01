@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRM_t1.BL.Model
 {
+    [Serializable]
     public class Product
     {
         #region --- Поля  ---
